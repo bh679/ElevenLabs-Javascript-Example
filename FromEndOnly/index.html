@@ -15,6 +15,7 @@
 
 <button onclick="speak()">Speak</button>
 
+<p><b>Output:</b></p>
 <p id="status"></p>
 
 <script>
@@ -27,7 +28,7 @@ function speak() {
     const voiceId = document.getElementById('voice-id-input').value;
     const apiKey = document.getElementById('api-key-input').value;
 
-    status.innerText += text;
+    status.innerText += "\n"+text;
 
     const headers = new Headers();
     headers.append('Accept', 'audio/mpeg');
@@ -43,7 +44,7 @@ function speak() {
         }
     });
 
-    document.getElementById('status').innerText += 'Processing...';
+    document.getElementById('status').innerText += '\nProcessing...';
 
     fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
         method: 'POST',
@@ -52,7 +53,7 @@ function speak() {
     })
     .then(response => {
         if (response.ok) {
-            status.innerText += 'Speech successfully generated!';
+            status.innerText += '\nSpeech successfully generated!';
             return response.blob();
         } else {
             throw new Error('Error: ' + response.statusText);
@@ -63,12 +64,12 @@ function speak() {
         const audio = new Audio(url);
         audio.play();
         audio.onended = () => {
-            status.innerText += 'Audio has finished playing!';
+            status.innerText += '\nAudio has finished playing!';
         };
     })
     .catch(error => {
         console.error('Error:', error);
-        status.innerText += 'Error: ' + error.message;
+        status.innerText += '\nError: ' + error.message;
     });
 }
 </script>
