@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 
 // Import the 'speak' function from 'ElevenLabs.js'
-const Speak = require('./ElevenLabs');
+const Speak = require('./ElevenLabsServer');
 
 const ENV = require('./env');
 const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
