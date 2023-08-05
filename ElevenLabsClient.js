@@ -1,10 +1,10 @@
 const apiDomain = 'https://brennan.games:3000';
 
 async function Speak(text, status) {
-    status.innerText = "Speak: " + text + '\n';
+    if(status != null) status.innerText = "Speak: " + text + '\n';
 
     try {
-        status.innerText += 'Processing...\n';
+        if(status != null) status.innerText += 'Processing...\n';
 
         const response = await fetch(apiDomain+'/Speak', {
             method: 'POST',
@@ -18,7 +18,7 @@ async function Speak(text, status) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        status.innerText += 'Speech successfully generated!\n';
+        if(status != null) status.innerText += 'Speech successfully generated!\n';
 
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -26,11 +26,11 @@ async function Speak(text, status) {
         audio.play();
 
         audio.onended = () => {
-            status.innerText += 'Audio has finished playing!\n';
+            if(status != null) status.innerText += 'Audio has finished playing!\n';
         };
 
     } catch (error) {
         console.error('Error:', error);
-        status.innerText += 'Error: ' + error.message + '\n';
+        if(status != null) status.innerText += 'Error: ' + error.message + '\n';
     }
 }
