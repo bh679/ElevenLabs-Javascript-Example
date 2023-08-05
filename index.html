@@ -6,14 +6,15 @@
 <h2>Node.JS Demo</h2>
 
 <input type="text" id="text-input" value="Type something...">
-<button onclick="speak()">Speak</button>
+<button onclick="Speak(document.getElementById('text-input').value, document.getElementById('status'))">Speak</button>
+
 
 <p><b>Output:</b></p>
 <p id="status"></p>
 <br />
 <a href="https://github.com/bh679/ElevenLabs-Javascript-Example" target="_blank">GitHub</a> | <a href="FrontEndOnly/" >Client Demo</a> 
 
-<script src="script.js"></script>
+<script src="ElevenLabsClient.js"></script>
 
 </body>
 </html>

@@ -1,8 +1,6 @@
 const apiDomain = 'https://brennan.games:3000';
 
-async function speak() {
-    const text = document.getElementById('text-input').value;
-    const status = document.getElementById('status');
+async function Speak(text, status) {
     status.innerText = "Speak: " + text + '\n';
 
     try {
