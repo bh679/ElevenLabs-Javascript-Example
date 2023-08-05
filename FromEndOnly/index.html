@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Eleven Labs Text-to-Speech</h1>
+
+<label for="api-key-input">API Key:</label><br>
+<input type="text" id="api-key-input" value="your_api_key"><br>  <!-- replace with your api key -->
+
+<label for="voice-id-input">Voice ID:</label><br>
+<input type="text" id="voice-id-input" value="21m00Tcm4TlvDq8ikWAM"><br>
+
+<label for="text-input">Text:</label><br>
+<input type="text" id="text-input" value="Type something..."><br>
+
+<button onclick="speak()">Speak</button>
+
+<script>
+function speak() {
+    const text = document.getElementById('text-input').value;
+    const voiceId = document.getElementById('voice-id-input').value;
+    const apiKey = document.getElementById('api-key-input').value;
+
+    const headers = new Headers();
+    headers.append('Accept', 'audio/mpeg');
+    headers.append('xi-api-key', apiKey);
+    headers.append('Content-Type', 'application/json');
+
+    const body = JSON.stringify({
+        text: text,
+        model_id: 'eleven_monolingual_v1',
+        voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.5
+        }
+    });
+
+    fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
+        method: 'POST',
+        headers: headers,
+        body: body
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        new Audio(url).play();
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</body>
+</html>

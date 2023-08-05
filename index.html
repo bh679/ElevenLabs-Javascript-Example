@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Eleven Labs Text-to-Speech</h1>
+
+<input type="text" id="text-input" value="Type something...">
+<button onclick="speak()">Speak</button>
+
+<script>
+function speak() {
+    const text = document.getElementById('text-input').value;
+
+    fetch('/Speak', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ text: text })
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        new Audio(url).play();
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+</body>
+</html>
