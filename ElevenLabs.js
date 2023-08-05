@@ -9,7 +9,7 @@ const Speak = async (req, res) => {
     var voiceId;
 
     if(req.body.voiceId == null || req.body.voiceId == "")
-        voiceId = '21m00Tcm4TlvDq8ikWAM';  // replace with your voice id
+        voiceId = '21m00Tcm4TlvDq8ikWAM';  // default voice
     else
         voiceId = req.body.voiceId;
 

@@ -11,6 +11,9 @@
 <p id="status"></p>
 
 <script>
+
+const apiDomain = 'https://brennan.games:3000';
+
 async function speak() {
     const text = document.getElementById('text-input').value;
     const status = document.getElementById('status');
@@ -19,7 +22,7 @@ async function speak() {
     try {
         status.innerText += 'Processing...\n';
 
-        const response = await fetch('https://brennan.games:3000/Speak', {
+        const response = await fetch(apiDomain+'/Speak', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

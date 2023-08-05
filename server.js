@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const app = express();
 const port = 3000;
 
-// Import the 'speak' function from 'elevenLabs.js'
+// Import the 'speak' function from 'ElevenLabs.js'
 const Speak = require('./ElevenLabs');
 
 const ENV = require('./env');
