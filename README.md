@@ -14,7 +14,7 @@ This example uses Node.js, which allows you to conceal your API Key. <br />
 <img width="465" alt="Screenshot 2023-08-05 at 6 33 05 pm" src="https://github.com/bh679/ElevenLabs-Javascript-Example/assets/2542558/d3e3656f-abb5-4181-8bc7-994f5b4af5a5">
 
 
-### Troubleshooting
+# Troubleshooting
 Make sure you have the tab unmuted. <br />
 <img width="327" alt="Screenshot 2023-08-05 at 5 44 57 pm" src="https://github.com/bh679/ElevenLabs-Javascript-Example/assets/2542558/7f72f52e-0baf-4976-a53d-0818cadf7af3">
 
