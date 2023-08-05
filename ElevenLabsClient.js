@@ -1,6 +1,6 @@
 const apiDomain = 'https://brennan.games:3000';
 
-async function Speak(text, status) {
+async function Speak(text, voice, status) {
     if(status != null) status.innerText = "Speak: " + text + '\n';
 
     try {
@@ -11,7 +11,7 @@ async function Speak(text, status) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ text: text })
+            body: JSON.stringify({ text: text, voiceId: voice })
         });
 
         if (!response.ok) {
