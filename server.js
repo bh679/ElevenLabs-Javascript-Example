@@ -3,16 +3,18 @@ const fetch = require('node-fetch');
 const app = express();
 const port = 3000;
 
+const ENV = require('./env');
+const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
+
 app.use(express.json());
 
 app.post('/speak', async (req, res) => {
     const text = req.body.text;
     const voiceId = '21m00Tcm4TlvDq8ikWAM';  // replace with your voice id
-    const apiKey = 'your_api_key';  // replace with your api key
 
     const headers = {
         'Accept': 'audio/mpeg',
-        'xi-api-key': apiKey,
+        'xi-api-key': ELEVENLABS_API_KEY,
         'Content-Type': 'application/json'
     };
 

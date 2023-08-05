@@ -7,23 +7,45 @@
 <input type="text" id="text-input" value="Type something...">
 <button onclick="speak()">Speak</button>
 
-<script>
-function speak() {
-    const text = document.getElementById('text-input').value;
+<p><b>Output:</b></p>
+<p id="status"></p>
 
-    fetch('/Speak', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text: text })
-    })
-    .then(response => response.blob())
-    .then(blob => {
+<script>
+async function speak() {
+    const text = document.getElementById('text-input').value;
+    const status = document.getElementById('status');
+    status.innerText = "Speak: " + text;
+
+    try {
+        status.innerText += 'Processing...\n';
+
+        const response = await fetch('/Speak', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: text })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        status.innerText += 'Speech successfully generated!\n';
+
+        const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-        new Audio(url).play();
-    })
-    .catch(error => console.error('Error:', error));
+        const audio = new Audio(url);
+        audio.play();
+
+        audio.onended = () => {
+            status.innerText += 'Audio has finished playing!\n';
+        };
+
+    } catch (error) {
+        console.error('Error:', error);
+        status.innerText += 'Error: ' + error.message + '\n';
+    }
 }
 </script>
 
