@@ -14,12 +14,12 @@
 async function speak() {
     const text = document.getElementById('text-input').value;
     const status = document.getElementById('status');
-    status.innerText = "Speak: " + text;
+    status.innerText = "Speak: " + text + '\n';
 
     try {
         status.innerText += 'Processing...\n';
 
-        const response = await fetch('/Speak', {
+        const response = await fetch('https://brennan.games:3000/Speak', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

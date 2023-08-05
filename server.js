@@ -8,9 +8,18 @@ const ELEVENLABS_API_KEY = ENV.ELEVENLABS_API_KEY;
 
 app.use(express.json());
 
-app.post('/speak', async (req, res) => {
+//Speak text with ElevenLabs
+app.post('/Speak', async (req, res) => {
+    console.log("Speak");
     const text = req.body.text;
-    const voiceId = '21m00Tcm4TlvDq8ikWAM';  // replace with your voice id
+    var voiceId;
+
+    if(req.body.voiceId == null || req.body.voiceId == "")
+        voiceId = '21m00Tcm4TlvDq8ikWAM';  // replace with your voice id
+    else
+        voiceId = req.body.voiceId;
+
+    console.log("VoiceId " + voiceId);
 
     const headers = {
         'Accept': 'audio/mpeg',
@@ -27,14 +36,14 @@ app.post('/speak', async (req, res) => {
         }
     });
 
-    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
-        method: 'POST',
+    const response = await axios.post(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, body, {
         headers: headers,
-        body: body
+        responseType: 'arraybuffer'  // This is important for handling binary data
     });
 
-    const audio = await response.blob();
+    const audio = Buffer.from(response.data, 'binary');
     res.send(audio);
+
 });
 
 app.listen(port, () => {
