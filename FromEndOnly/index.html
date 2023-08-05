@@ -5,21 +5,29 @@
 <h1>Eleven Labs Text-to-Speech</h1>
 
 <label for="api-key-input">API Key:</label><br>
-<input type="text" id="api-key-input" value="your_api_key"><br>  <!-- replace with your api key -->
+<input type="password" id="api-key-input" ><br>  <!-- replace with your api key -->
 
 <label for="voice-id-input">Voice ID:</label><br>
 <input type="text" id="voice-id-input" value="21m00Tcm4TlvDq8ikWAM"><br>
 
 <label for="text-input">Text:</label><br>
-<input type="text" id="text-input" value="Type something..."><br>
+<input type="text" id="text-input" placeholder="Type something..."><br>
 
 <button onclick="speak()">Speak</button>
 
+<p id="status"></p>
+
 <script>
 function speak() {
+
+    const status = document.getElementById('status');
+    status.innerText = "Speak Pressed: ";
+
     const text = document.getElementById('text-input').value;
     const voiceId = document.getElementById('voice-id-input').value;
     const apiKey = document.getElementById('api-key-input').value;
+
+    status.innerText += text;
 
     const headers = new Headers();
     headers.append('Accept', 'audio/mpeg');
@@ -35,17 +43,33 @@ function speak() {
         }
     });
 
+    document.getElementById('status').innerText += 'Processing...';
+
     fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`, {
         method: 'POST',
         headers: headers,
         body: body
     })
-    .then(response => response.blob())
+    .then(response => {
+        if (response.ok) {
+            status.innerText += 'Speech successfully generated!';
+            return response.blob();
+        } else {
+            throw new Error('Error: ' + response.statusText);
+        }
+    })
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        new Audio(url).play();
+        const audio = new Audio(url);
+        audio.play();
+        audio.onended = () => {
+            status.innerText += 'Audio has finished playing!';
+        };
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        status.innerText += 'Error: ' + error.message;
+    });
 }
 </script>
 
