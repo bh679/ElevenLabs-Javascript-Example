@@ -13,6 +13,8 @@ class SpeechManager {
 
         if(status)
             this.status = status;
+
+         this.cache = new Map();  // Cache to store audio blob URLs for text-voice combinations
     }
 
     async unlockAudioContext() {
@@ -66,11 +68,11 @@ class SpeechManager {
     }
 
     // The Speak function initiates a speech task
-    async Speak(text, voice, callBack) {
+    async Speak(text, voice, callBack) 
+    {
+        this.AddToStatus("Speak text:" + text + " voice:" + voice);
 
-        this.AddToStatus("Speak text:"+text+" voice:"+voice);
-
-        if(!this.unlocked)
+        if (!this.unlocked)
             await buttonPressHandler();
 
         // If the system is not currently allowed to speak, or if there is an audio currently playing, or if a speech task is already happening, return immediately
@@ -78,22 +80,28 @@ class SpeechManager {
             return;
 
         //if new thing to be said
-        if(text != null && voice != null)
-        {
+        if (text != null && voice != null) {
             console.log("Adding to queue");
 
-            // Fetch the speech audio from the API and add the speech task to the queue
-            this.fetchSpeech(text, voice)
-                .then(blobUrl => {
-                this.queue.push({text: text, voice: voice, callBack: callBack, blobUrl: blobUrl});
+            const cacheKey = `${text}-${voice}`;  // Create a unique key for text-voice combination
+            let blobUrl;
 
-                // If it's not currently speaking, start to play
-                if (!this.isSpeaking) {
-                    this.PlayNextInQueue();
-                }
-            });
+            if (this.cache.has(cacheKey)) {
+                blobUrl = this.cache.get(cacheKey);  // Retrieve the blob URL from the cache
+            } else {
+                blobUrl = await this.fetchSpeech(text, voice);
+                this.cache.set(cacheKey, blobUrl);  // Store the blob URL in the cache
+            }
+
+            this.queue.push({ text: text, voice: voice, callBack: callBack, blobUrl: blobUrl });
+
+            // If it's not currently speaking, start to play
+            if (!this.isSpeaking) {
+                await this.PlayNextInQueue();
+            }
         }
     }
+
 
     async PlayNextInQueue() {
         // If the system is currently speaking or there's no speech task in the queue, return immediately
@@ -125,13 +133,14 @@ class SpeechManager {
     }
 
     async GetAudio(blobUrl) {
-        // Fetch the audio data from the blob URL
         const response = await fetch(blobUrl);
-        // Convert the response to an array buffer
+        if (!response.ok) {
+            throw new Error(`Failed to fetch audio from blob URL. Status: ${response.status}`);
+        }
         const arrayBuffer = await response.arrayBuffer();
-        // Decode the audio data into an AudioBuffer and return it
         return this.audioContext.decodeAudioData(arrayBuffer);
     }
+
 
     PlayAudio(audioBuffer, callBack) {
         // Create an AudioBufferSourceNode from the AudioBuffer
@@ -167,9 +176,11 @@ class SpeechManager {
 
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-
+        console.log(`Generated blob URL: ${url}`);
         return url;
+
     }
+
     /*
      * The handleAudioEnd function handles the end of the audio.
      * It sets up a callback to be called when the audio finishes playing.
