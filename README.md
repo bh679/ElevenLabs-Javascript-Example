@@ -20,3 +20,4 @@ Make sure you have the tab unmuted. <br />
 
 ## ChatGPT Thread
 [The ChatGPT Thread I used to make this](https://chat.openai.com/share/7a918b06-5eb2-47f6-88f8-854abd629d3f)
+[Thread for playing on mac](https://chat.openai.com/share/704c8b6e-28ee-429e-aef9-9466342c489a)
