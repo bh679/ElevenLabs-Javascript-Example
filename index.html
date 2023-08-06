@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <script src="ElevenLabsClient.js"></script>
+</head>
 <body>
 
-<h1>Eleven Labs Text-to-Speech</h1>
-<h2>Node.JS Demo</h2>
+    <h1>Eleven Labs Text-to-Speech</h1>
+    <h2>Node.JS Demo</h2>
 
-<input type="text" id="text-input" value="Type something...">
-<input type="text" id="voiceId" value="21m00Tcm4TlvDq8ikWAM">
-<button onclick="Speak(document.getElementById('text-input').value, document.getElementById('voiceId').value, document.getElementById('status'))">Speak</button>
+    <input type="text" id="text-input" value="Type something...">
+    <input type="text" id="voiceId" value="21m00Tcm4TlvDq8ikWAM">
+    <button onclick="speechManager.Speak(document.getElementById('text-input').value, document.getElementById('voiceId').value, null)">Speak</button>
 
 
-<p><b>Output:</b></p>
-<p id="status"></p>
-<br />
-<a href="https://github.com/bh679/ElevenLabs-Javascript-Example" target="_blank">GitHub</a> | <a href="FrontEndOnly/" >Client Demo</a> 
+    <p><b>Output:</b></p>
+    <p id="SpeechManagerStatus"></p>
+    <br />
+    <a href="https://github.com/bh679/ElevenLabs-Javascript-Example" target="_blank">GitHub</a> | <a href="FrontEndOnly/" >Client Demo</a> 
 
-<script src="ElevenLabsClient.js"></script>
 
 </body>
 </html>
